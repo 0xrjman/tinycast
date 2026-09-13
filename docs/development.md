@@ -68,6 +68,23 @@ Consequences worth knowing:
 - The Hyper Key's Caps Lock remap is `hidutil` state, which is **system-wide, not per-bundle**: quitting
   one build clears the remap for the other, which then needs a rebind or a relaunch to restore it.
 
+### Installing a Release build to `/Applications`
+
+`install-local.sh` is the self-update path for a build you ship to yourself: rebuild the current
+checkout as a signed Release, replace the installed app, and relaunch it. It is the *installed* app
+under `com.tinycast.app`, not the `Tinycast Dev.app` channel above.
+
+```sh
+git pull                    # you decide what to build; the script never pulls for you
+./Scripts/install-local.sh  # -> rebuilds Release, replaces /Applications/Tinycast.app, relaunches
+./Scripts/install-local.sh 0.5.7   # pass a version to override project.yml's
+```
+
+It wraps `build-dmg.sh` (the Release build + self-sign, [release.md](release.md#packaging-a-dmg-locally)),
+then `ditto`s the result over `/Applications/Tinycast.app` and reopens it, so the `SMAppService` login
+item — which points at `/Applications` — follows the update. Use this to update a self-build, not the
+in-app updater, which checks the official GitHub releases and would pull an official build over it.
+
 ## Editor
 
 Xcode works out of the box and needs nothing here. Everything below is optional, and which editor you
