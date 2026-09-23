@@ -15,7 +15,7 @@ enum ReleaseChannel: Sendable {
         }
     }
 
-    var updatesItself: Bool { self != .development }
+    var updatesItself: Bool { false }
 
     /// Beta ships as a GitHub prerelease and stable does not; neither ever sees the other's.
     func accepts(prerelease: Bool) -> Bool {
